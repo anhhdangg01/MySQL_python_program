@@ -31,3 +31,17 @@ def releasesReviewedParser(uid):
 	
 def popularReleaseParser():
 	return 'SELECT R.rid, R.titel, R.reviewCount\nFROM Releases\nORDER BY reviewCount DESC\nLIMIT ' + N + ';'
+
+def releaseTitleParser(sid):
+	return 'SELECT S.rid, S.release_title, S.genre, S.video_title, S.ep_num, S.length\n' + \
+	'FROM Sessions S\nWHERE S.sid = ' + sid + ';'
+	
+def activeViewersParser(N, start, end):
+	return 'SELECT V.uid, V.firstname, V.lastname\n' + \
+	'FROM Viewers V\n' + \
+	'WHERE V.uid in (SELECT V1.uid\nFROM Viewers V1\nWHERE V1.initiate_at >= ' + start + ' AND V1.leave_at <= ' + end + ');'
+
+def viewedVideosParser(rid):
+
+
+
