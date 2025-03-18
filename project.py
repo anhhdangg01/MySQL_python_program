@@ -38,16 +38,13 @@ def command_parser():
     elif command_input[0] == "videosViewed":
         parserFunctions.viewedVideosParser(command_input[1])
 
-def load_data_instructions(path):
+def make_db_connection():
     """
-    Arg:
-     - path: Path to txt file to run
-    
+    Description: 
+     - Creates a connection between the program and the mysql database
     Return:
-     - 2-tuple of (database, cursor)
-       - database: connection between the python file and mysql db
-       - cursor: object to execute sql statements
-
+     - db: a mysql.connector object that represents a connection
+           between the program and mysql database
     """
     # creating connection
     db = mysql.connector.connect(
@@ -56,26 +53,23 @@ def load_data_instructions(path):
         password="password",
         database="cs122a"
     )
-    # setup object to execute
-    cursor = db.cursor()
+    return db
+
+def close_db_connection(db):
+    """
+    Description:
+     - Closes the database connection
     
-    with open(path, 'r') as file:
-        # read in load statements
-        load_statements = file.readlines()
+    Args:
+     - db: mysql.connector object to close
+    
+    Return:
+     - None
+    """
 
-        # execute all lines in path that aren't empty
-        for line in load_statements:
-            line.strip()
-            if line:
-                cursor.execute(line)
-                # debugging print statement
-                # print(f"Executed: {line}")
-
-    # return db and cursor for future use
-    #return (db, cursor)
-    cursor.close()
     db.close()
 
-
 if __name__ == '__main__':
+    db = make_db_connection()
     command_parser()
+    close_db_connection(db)

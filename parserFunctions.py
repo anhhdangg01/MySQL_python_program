@@ -1,5 +1,15 @@
-def importParser(folderName):
-	return True # boolean output placeholder
+import helperFunctions
+
+# have to change the params for this to include the db object
+# I will also continue to test this function -Chris
+def importParser(folderName, db):
+	try:
+		helperFunctions.delete_db_tables(db)
+		helperFunctions.import_files(folderName, db)
+		return True # boolean output placeholder
+	except Exception:
+		return False
+
 
 def insertViewerParser(uid, email, nickname, street, city, state, zip, genres, joined_date, first, last, subscription):
 	result = 'INSERT INTO Viewers\nVALUES ('
