@@ -25,7 +25,7 @@ def selectGenresParser(uid):
 	cursor.execute('SELECT U.genres\nFROM Users U\nWHERE U.uid = ' + uid + ';')
 	query = cursor.fetchone()
 	cursor.close()
-	return query
+	return query[0]
 
 def addGenreParser(uid, genre, old_genres):
 	currGenres = old_genres + '; ' + genre
@@ -35,10 +35,10 @@ def insertMovieParser(rid, website_url):
 	return 'INSERT INTO Movies\nValues (' + rid + ', ' + website_url + ');'
 	
 def insertSessionParser(sid, uid, rid, ep_num, initiate_at, leave_at, quality, device):
-	return 'INSERT INTO Sessions\nVALUES (' + sid + ', ' + uid + ', ' + rid + ', ' + ep_num + ', \'' + initiate_at + '\', \''+  leave_at + '\', ' + quality + ', ' + device + ');'
+	return 'INSERT INTO Sessions\nVALUES (' + sid + ', ' + uid + ', ' + rid + ', ' + ep_num + ', ' + initiate_at + ', '+  leave_at + ', ' + quality + ', ' + device + ');'
 	
 def updateReleaseParser(rid, title):
-	return 'UPDATE Releases\nSET title = \'' + title + '\'\nWHERE rid = ' + rid + ';'
+	return 'UPDATE Releases\nSET title = ' + title + '\nWHERE rid = ' + rid + ';'
 	
 def releasesReviewedParser(uid):
 	return 'SELECT DISTINCT R.rid, R.genre, R.title\nFROM Releases R\nWHERE R.uid = ' + uid + \
