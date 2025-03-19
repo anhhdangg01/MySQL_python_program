@@ -33,17 +33,60 @@ def command_parser(db):
         query = parserFunctions.insertViewerParser(command_input[1], command_input[2], command_input[3], command_input[4],
                                            command_input[5], command_input[6], command_input[7], command_input[8],
                                            command_input[9], command_input[10], command_input[11], command_input[12])
+        try:
+            cursor = db.cursor()
+            cursor.execute(query)
+            cursor.close()
+            return True
+        except Exception:
+            return False
     elif command_input[0] == "addGenre":
-        query = parserFunctions.addGenreParser(command_input[1], command_input[2])
+        old_genre = parserFunctions.selectGenresParser(command_input[1], db)
+        query = parserFunctions.addGenreParser(command_input[1], command_input[2], old_genre)
+        try:
+            cursor = db.cursor()
+            cursor.execute(query)
+            cursor.close()
+            return True
+        except Exception:
+            return False
     elif command_input[0] == "deleteViewer":
         query = parserFunctions.deleteViewerParser(command_input[1])
+        try:
+            cursor = db.cursor()
+            cursor.execute(query)
+            cursor.close()
+            return True
+        except Exception:
+            return False
     elif command_input[0] == "insertMovie":
         query = parserFunctions.insertMovieParser(command_input[1], command_input[2])
+        try:
+            cursor = db.cursor()
+            cursor.execute(query)
+            cursor.close()
+            return True
+        except Exception:
+            return False
     elif command_input[0] == "insertSession":
         query = parserFunctions.insertSessionParser(command_input[1], command_input[2], command_input[3], command_input[4],
                                             command_input[5], command_input[6], command_input[7], command_input[8])
+        try:
+            cursor = db.cursor()
+            cursor.execute(query)
+            cursor.close()
+            return True
+        except Exception:
+            return False
     elif command_input[0] == "updateRelease":
         query = parserFunctions.updateReleaseParser(command_input[1], command_input[2])
+        try:
+            cursor = db.cursor()
+            cursor.execute(query)
+            cursor.close()
+            return True
+        except Exception:
+            return False
     elif command_input[0] == "listReleases":
         query = parserFunctions.releasesReviewedParser(command_input[1])
     elif command_input[0] == "popularRelease":
