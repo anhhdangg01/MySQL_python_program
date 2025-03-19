@@ -20,7 +20,7 @@ def deleteViewerParser(uid):
 	return 'DELETE FROM Viewers V\nWHERE V.uid = ' + uid + ';'
 	
 	
-def selectGenresParser(uid):
+def selectGenresParser(uid, db):
 	cursor = db.cursor()
 	cursor.execute('SELECT U.genres\nFROM Users U\nWHERE U.uid = ' + uid + ';')
 	query = cursor.fetchone()
