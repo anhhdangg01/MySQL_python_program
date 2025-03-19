@@ -13,7 +13,7 @@ def importParser(folderName, db):
 
 def insertViewerParser(uid, email, nickname, street, city, state, zip, genres, joined_date, first, last, subscription):
 	result = 'INSERT INTO Viewers\nVALUES ('
-	result += uid + ', ' + email + ', ' + nickname + ', \'' + street + '\', ' + city + ', ' + state + ', ' + zip + ', \'' + genres + '\', ' + joined_date + ', ' + first + ', ' + last + ', ' + subscription + ');'
+	result += uid + ', ' + email + ', ' + nickname + ', ' + street + ', ' + city + ', ' + state + ', ' + zip + ', ' + genres + ', ' + joined_date + ', ' + first + ', ' + last + ', ' + subscription + ');'
 	return result
 	
 def deleteViewerParser(uid):
@@ -21,13 +21,15 @@ def deleteViewerParser(uid):
 	
 	
 def selectGenresParser(uid):
-	return 'SELECT U.genres\nFROM Users U\nWHERE U.uid = ' + uid + ';'
-	 
-def addGenreParser(uid, genre):
-	currGenres = ''
-	#currGenres = selectGenres(selectGenresParser)
-	newGenres = currGenres + '; ' + genre #FIX THIS!!!!
-	return 'UPDATE Users\nSET genres = ' + newGenres + '\nWHERE uid = ' + uid + ';'
+	cursor = db.cursor()
+	cursor.execute('SELECT U.genres\nFROM Users U\nWHERE U.uid = ' + uid + ';')
+	query = cursor.fetchone()
+	cursor.close()
+	return query
+
+def addGenreParser(uid, genre, old_genres):
+	currGenres = old_genres + '; ' + genre
+	return 'UPDATE Users\nSET genres = ' + currGenres + '\nWHERE uid = ' + uid + ';'
 	
 def insertMovieParser(rid, website_url):
 	return 'INSERT INTO Movies\nValues (' + rid + ', ' + website_url + ');'
