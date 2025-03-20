@@ -101,14 +101,10 @@ def make_db_connection():
     """
     # creating connection
     db = mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password="Gonstead4sql",
-        database="test_db"
         #host="localhost",
-        #user="test",
-        #password="password",
-        #database="cs122a"
+        user="test",
+        password="password",
+        database="cs122a"
     )
     return db
 
