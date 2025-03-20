@@ -45,7 +45,7 @@ def releasesReviewedParser(uid):
 	'ORDER BY title ASC;'
 	
 def popularReleaseParser(N):
-	return 'SELECT R.rid, R.titel, R.reviewCount\nFROM Releases\nORDER BY reviewCount DESC\nLIMIT ' + N + ';'
+	return 'SELECT R.rid, R.title, R.reviewCount\nFROM Releases\nORDER BY reviewCount DESC\nLIMIT ' + N + ';'
 
 def releaseTitleParser(sid):
 	return 'SELECT S.rid, S.release_title, S.genre, S.video_title, S.ep_num, S.length\n' + \
