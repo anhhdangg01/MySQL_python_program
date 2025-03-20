@@ -14,6 +14,33 @@ def execute_boolean_query(db, query_string):
 		print("Fail")
 
 
+def execute_record_query(db, query_string):
+	"""
+	Executes the given query and outputs each record in one line and separates columns using csv.
+
+	"""
+	try:
+		cursor = db.cursor()
+		cursor.execute(query_string)
+		query = cursor.fetchall()
+		cursor.close()
+		
+		# record_output = ""
+		# for record in range(len(query) - 1):
+		# 	record_output += str(query[record]) + ","
+		# record_output += str(query[len(query) - 1])
+		# print(record_output)
+		for record in query:
+			record_output = ""
+			for attribute in range(len(record) - 1):
+				record_output += str(record[attribute]) + ","
+			record_output += str(record[len(record) - 1])
+			print(record_output)
+
+	except mysql.connector.IntegrityError as e:
+		return
+
+
 def get_data_type(data):
 	"""
     Description:

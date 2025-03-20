@@ -66,23 +66,34 @@ def updateReleaseParser(rid, title):
 	
 
 def releasesReviewedParser(uid):
-	return 'SELECT DISTINCT rid, genre, title\nFROM releases R\nWHERE R.uid = ' + uid + \
-	'ORDER BY title ASC;'
+	return 'SELECT DISTINCT Rel.rid, Rel.genre, Rel.title\n' + \
+	'FROM releases Rel, reviews Rev\n' + \
+	'WHERE Rel.rid = Rev.rid AND Rev.uid = ' + uid + "\n" + \
+	'ORDER BY Rel.title ASC;'
 	
 
 def popularReleaseParser(N):
-	return 'SELECT rid, title, reviewCount\nFROM releases\nORDER BY reviewCount DESC\nLIMIT ' + N + ';'
+	return 'SELECT Rel.rid, Rel.title, COUNT(Rev.rid) as reviewCount\n' \
+	'FROM releases Rel, reviews Rev\n' \
+	'WHERE Rel.rid = Rev.rid\n' \
+	'GROUP BY Rev.rid\n' \
+	'ORDER BY reviewCount DESC\n' \
+	'LIMIT ' + N + ';'
 
 
 def releaseTitleParser(sid):
-	return 'SELECT rid, release_title, genre, video_title, ep_num, length\n' + \
-	'FROM sessions\nWHERE sid = ' + sid + ';'
+	return 'SELECT S.sid, R.title, R.genre, V.title, V.ep_num, V.length\n' \
+	'FROM sessions S, releases R, videos V\n' \
+	'WHERE S.sid = ' + sid + ' AND S.rid = R.rid AND R.rid = V.rid\n' \
+	'ORDER BY R.title ASC;'
 	
 
 def activeViewersParser(N, start, end):
-	return 'SELECT V.uid, V.firstname, V.lastname\n' + \
+	return 'SELECT V.uid, V.first_name, V.last_name\n' + \
 	'FROM viewers V\n' + \
-	'WHERE V.uid in (SELECT V1.uid\nFROM viewers V1\nWHERE V1.initiate_at >= "' + start + '" AND V1.leave_at <= "' + end + '");'
+	'WHERE V.uid in (SELECT V1.uid\n' + \
+					'FROM viewers V1\n' + \
+					'WHERE V1.initiate_at >= "' + start + '" AND V1.leave_at <= "' + end + '");'
 
 
 def viewedVideosParser(rid):

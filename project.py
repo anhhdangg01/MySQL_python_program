@@ -52,14 +52,19 @@ def command_parser(db):
         helperFunctions.execute_boolean_query(db, query)
     elif command_input[0] == "listReleases":
         query = parserFunctions.releasesReviewedParser(command_input[1])
+        helperFunctions.execute_record_query(db, query)
     elif command_input[0] == "popularRelease":
         query = parserFunctions.popularReleaseParser(command_input[1])
+        helperFunctions.execute_record_query(db, query)
     elif command_input[0] == "releaseTitle":
         query = parserFunctions.releaseTitleParser(command_input[1])
+        helperFunctions.execute_record_query(db, query)
     elif command_input[0] == "activeViewer":
         query = parserFunctions.activeViewersParser(command_input[1], command_input[2], command_input[3])
+        helperFunctions.execute_record_query(db, query)
     elif command_input[0] == "videosViewed":
         query = parserFunctions.viewedVideosParser(command_input[1])
+        helperFunctions.execute_record_query(db, query)
 
     # Run this if you want to see all tables and rows
     # in db
