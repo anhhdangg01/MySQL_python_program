@@ -13,16 +13,29 @@ def importParser(folderName, db):
 
 
 def insertViewerParser(db, uid, email, nickname, street, city, state, zip, genres, joined_date, first, last, subscription):
-	result = f'INSERT INTO viewers\nVALUES ({uid}, "{first}", "{last}", "{subscription}")'
-	insertUserParser(db, uid, email, joined_date, nickname, street, city, state, zip, genres)
+	try:
+		cursor = db.cursor()
+		result = f'INSERT INTO viewers\nVALUES ({uid}, "{first}", "{last}", "{subscription}");'
+		cursor.execute(result)
+		result = f'INSERT INTO users\nVALUES ({uid}, "{email}", "{joined_date}", "{nickname}", "{street}", "{city}", "{state}", "{zip}", "{genres}");'
+		cursor.execute(result)
+		cursor.close()
+		print("Success")
+	except mysql.connector.IntegrityError as e:
+		print("Fail")
 	#result = 'INSERT INTO Viewers\nVALUES ('
 	#result += uid + ', "' + email + '", "' + nickname + '", "' + street + '", "' + city + '", "' + state + '", "' + zip + '", "' + genres + '", ' + joined_date + ', "' + first + '", "' + last + '", "' + subscription + '");'
-	return result
-
+	#return result
+"""
 def insertUserParser(db, uid, email, joined_date, nickname, street, city, state, zip, genres):
-	result = f'INSERT INTO users\nVALUES ({uid}, "{email}", "{joined_date}", "{nickname}", "{street}", "{city}", "{state}", "{zip}", "{genres}");'
-	helperFunctions.execute_boolean_query(db, result)
-	
+	try:
+		cursor = db.cursor()
+		result = f'INSERT INTO users\nVALUES ({uid}, "{email}", "{joined_date}", "{nickname}", "{street}", "{city}", "{state}", "{zip}", "{genres}");'
+		cursor.execute(result)
+		cursor.close()
+	except mysql.connector.IntegrityError as e:
+		return False
+"""
 def deleteViewerParser(uid):
 	return 'DELETE FROM Viewers V\nWHERE V.uid = ' + uid + ';'
 	
