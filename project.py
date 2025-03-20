@@ -29,7 +29,7 @@ def command_parser(db):
     if command_input[0] == "import":
         parserFunctions.importParser(command_input[1], db)
     elif command_input[0] == "insertViewer":        
-        query = parserFunctions.insertViewerParser(command_input[1], command_input[2], command_input[3], command_input[4],
+        query = parserFunctions.insertViewerParser(db, command_input[1], command_input[2], command_input[3], command_input[4],
                                            command_input[5], command_input[6], command_input[7], command_input[8],
                                            command_input[9], command_input[10], command_input[11], command_input[12])
         helperFunctions.execute_boolean_query(db, query)
@@ -63,7 +63,7 @@ def command_parser(db):
 
     # Run this if you want to see all tables and rows
     # in db
-    """
+    
     cursor = db.cursor()
     cursor.execute("SHOW TABLES")
     tables = cursor.fetchall()
@@ -77,8 +77,8 @@ def command_parser(db):
         print()
         print()
     cursor.close()
+    
     """
-    #"""
     print("Post")
     cursor = db.cursor()
     print(f"Table: viewers")
@@ -88,7 +88,7 @@ def command_parser(db):
     for row in rows:
         print(row)
     cursor.close()
-    #"""
+    """
 
 
 def make_db_connection():
@@ -101,10 +101,14 @@ def make_db_connection():
     """
     # creating connection
     db = mysql.connector.connect(
+        host="localhost",
+        user="root",
+        password="Gonstead4sql",
+        database="test_db"
         #host="localhost",
-        user="test",
-        password="password",
-        database="cs122a"
+        #user="test",
+        #password="password",
+        #database="cs122a"
     )
     return db
 

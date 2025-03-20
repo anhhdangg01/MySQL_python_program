@@ -12,10 +12,16 @@ def importParser(folderName, db):
 		print("Fail")
 
 
-def insertViewerParser(uid, email, nickname, street, city, state, zip, genres, joined_date, first, last, subscription):
-	result = 'INSERT INTO Viewers\nVALUES ('
-	result += uid + ', ' + email + ', ' + nickname + ', ' + street + ', ' + city + ', ' + state + ', ' + zip + ', ' + genres + ', ' + joined_date + ', ' + first + ', ' + last + ', ' + subscription + ');'
+def insertViewerParser(db, uid, email, nickname, street, city, state, zip, genres, joined_date, first, last, subscription):
+	result = f'INSERT INTO viewers\nVALUES ({uid}, "{first}", "{last}", "{subscription}")'
+	insertUserParser(db, uid, email, joined_date, nickname, street, city, state, zip, genres)
+	#result = 'INSERT INTO Viewers\nVALUES ('
+	#result += uid + ', "' + email + '", "' + nickname + '", "' + street + '", "' + city + '", "' + state + '", "' + zip + '", "' + genres + '", ' + joined_date + ', "' + first + '", "' + last + '", "' + subscription + '");'
 	return result
+
+def insertUserParser(db, uid, email, joined_date, nickname, street, city, state, zip, genres):
+	result = f'INSERT INTO users\nVALUES ({uid}, "{email}", "{joined_date}", "{nickname}", "{street}", "{city}", "{state}", "{zip}", "{genres}");'
+	helperFunctions.execute_boolean_query(db, result)
 	
 def deleteViewerParser(uid):
 	return 'DELETE FROM Viewers V\nWHERE V.uid = ' + uid + ';'
@@ -33,7 +39,7 @@ def addGenreParser(uid, genre, old_genres):
 	return 'UPDATE Users\nSET genres = ' + currGenres + '\nWHERE uid = ' + uid + ';'
 	
 def insertMovieParser(rid, website_url):
-	return 'INSERT INTO Movies\nValues (' + rid + ', ' + website_url + ');'
+	return 'INSERT INTO movies\nVALUES (' + rid + ', "' + website_url + '");'
 	
 def insertSessionParser(sid, uid, rid, ep_num, initiate_at, leave_at, quality, device):
 	return 'INSERT INTO Sessions\nVALUES (' + sid + ', ' + uid + ', ' + rid + ', ' + ep_num + ', ' + initiate_at + ', '+  leave_at + ', ' + quality + ', ' + device + ');'

@@ -6,6 +6,7 @@ import datetime
 def execute_boolean_query(db, query_string):
 	try:
 		cursor = db.cursor()
+		print(f" DEBUG: {query_string}")
 		cursor.execute(query_string)
 		cursor.close()
 		print("Success")
