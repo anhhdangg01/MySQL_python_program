@@ -63,7 +63,7 @@ def command_parser(db):
 
     # Run this if you want to see all tables and rows
     # in db
-    
+    """
     cursor = db.cursor()
     cursor.execute("SHOW TABLES")
     tables = cursor.fetchall()
@@ -77,7 +77,7 @@ def command_parser(db):
         print()
         print()
     cursor.close()
-    
+    """
     """
     print("Post")
     cursor = db.cursor()
