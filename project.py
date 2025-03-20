@@ -1,5 +1,6 @@
 import sys
 import parserFunctions
+import helperFunctions
 import mysql.connector
 
 
@@ -10,7 +11,6 @@ def command_parser(db):
     """
     command_input = sys.argv[1:]
     query = ""
-    importing = False
     
     # Run this if you want to see all tables and rows
     # in db prior to a command
@@ -28,65 +28,28 @@ def command_parser(db):
 
     if command_input[0] == "import":
         parserFunctions.importParser(command_input[1], db)
-        importing = True
     elif command_input[0] == "insertViewer":        
-        query = parserFunctions.insertViewerParser(command_input[1], command_input[2], command_input[3], command_input[4],
+        parserFunctions.insertViewerParser(db, command_input[1], command_input[2], command_input[3], command_input[4],
                                            command_input[5], command_input[6], command_input[7], command_input[8],
                                            command_input[9], command_input[10], command_input[11], command_input[12])
-        try:
-            cursor = db.cursor()
-            cursor.execute(query)
-            cursor.close()
-            return True
-        except Exception:
-            return False
+        #helperFunctions.execute_boolean_query(db, query)
     elif command_input[0] == "addGenre":
         old_genre = parserFunctions.selectGenresParser(command_input[1], db)
         query = parserFunctions.addGenreParser(command_input[1], command_input[2], old_genre)
-        try:
-            cursor = db.cursor()
-            cursor.execute(query)
-            cursor.close()
-            return True
-        except Exception:
-            return False
+        helperFunctions.execute_boolean_query(db, query)
     elif command_input[0] == "deleteViewer":
         query = parserFunctions.deleteViewerParser(command_input[1])
-        try:
-            cursor = db.cursor()
-            cursor.execute(query)
-            cursor.close()
-            return True
-        except Exception:
-            return False
+        helperFunctions.execute_boolean_query(db, query)
     elif command_input[0] == "insertMovie":
         query = parserFunctions.insertMovieParser(command_input[1], command_input[2])
-        try:
-            cursor = db.cursor()
-            cursor.execute(query)
-            cursor.close()
-            return True
-        except Exception:
-            return False
+        helperFunctions.execute_boolean_query(db, query)
     elif command_input[0] == "insertSession":
         query = parserFunctions.insertSessionParser(command_input[1], command_input[2], command_input[3], command_input[4],
                                             command_input[5], command_input[6], command_input[7], command_input[8])
-        try:
-            cursor = db.cursor()
-            cursor.execute(query)
-            cursor.close()
-            return True
-        except Exception:
-            return False
+        helperFunctions.execute_boolean_query(db, query)
     elif command_input[0] == "updateRelease":
         query = parserFunctions.updateReleaseParser(command_input[1], command_input[2])
-        try:
-            cursor = db.cursor()
-            cursor.execute(query)
-            cursor.close()
-            return True
-        except Exception:
-            return False
+        helperFunctions.execute_boolean_query(db, query)
     elif command_input[0] == "listReleases":
         query = parserFunctions.releasesReviewedParser(command_input[1])
     elif command_input[0] == "popularRelease":
@@ -97,11 +60,6 @@ def command_parser(db):
         query = parserFunctions.activeViewersParser(command_input[1], command_input[2], command_input[3])
     elif command_input[0] == "videosViewed":
         query = parserFunctions.viewedVideosParser(command_input[1])
-    
-    if (importing == False):
-        cursor = db.cursor()
-        cursor.execute(query)
-        cursor.close()
 
     # Run this if you want to see all tables and rows
     # in db
@@ -120,7 +78,7 @@ def command_parser(db):
         print()
     cursor.close()
     """
-    #"""
+    """
     print("Post")
     cursor = db.cursor()
     print(f"Table: viewers")
@@ -130,7 +88,7 @@ def command_parser(db):
     for row in rows:
         print(row)
     cursor.close()
-    #"""
+    """
 
 
 def make_db_connection():
@@ -166,10 +124,6 @@ def close_db_connection(db):
 
 if __name__ == '__main__':
     db = make_db_connection()
-    if db.is_connected():
-        print("Success")
-    else:
-        print("Failed")
     command_parser(db)
     # commit the changes to the database
     db.commit()

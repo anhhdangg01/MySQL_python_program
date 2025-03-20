@@ -1,4 +1,5 @@
 import helperFunctions
+import mysql.connector
 
 # have to change the params for this to include the db object
 # I will also continue to test this function -Chris
@@ -6,17 +7,35 @@ def importParser(folderName, db):
 	try:
 		helperFunctions.delete_db_tables(db)
 		helperFunctions.import_files(folderName, db)
-		return True # boolean output placeholder
-	except Exception:
+		print("Success")
+	except mysql.connector.IntegrityError as e:
+		print("Fail")
+
+
+def insertViewerParser(db, uid, email, nickname, street, city, state, zip, genres, joined_date, first, last, subscription):
+	try:
+		cursor = db.cursor()
+		result = f'INSERT INTO viewers\nVALUES ({uid}, "{first}", "{last}", "{subscription}");'
+		cursor.execute(result)
+		result = f'INSERT INTO users\nVALUES ({uid}, "{email}", "{joined_date}", "{nickname}", "{street}", "{city}", "{state}", "{zip}", "{genres}");'
+		cursor.execute(result)
+		cursor.close()
+		print("Success")
+	except mysql.connector.IntegrityError as e:
+		print("Fail")
+	#result = 'INSERT INTO Viewers\nVALUES ('
+	#result += uid + ', "' + email + '", "' + nickname + '", "' + street + '", "' + city + '", "' + state + '", "' + zip + '", "' + genres + '", ' + joined_date + ', "' + first + '", "' + last + '", "' + subscription + '");'
+	#return result
+"""
+def insertUserParser(db, uid, email, joined_date, nickname, street, city, state, zip, genres):
+	try:
+		cursor = db.cursor()
+		result = f'INSERT INTO users\nVALUES ({uid}, "{email}", "{joined_date}", "{nickname}", "{street}", "{city}", "{state}", "{zip}", "{genres}");'
+		cursor.execute(result)
+		cursor.close()
+	except mysql.connector.IntegrityError as e:
 		return False
-
-
-def insertViewerParser(uid, email, nickname, street, city, state, zip, genres, joined_date, first, last, subscription):
-	result = 'INSERT INTO Viewers\nVALUES ('
-	result += uid + ', ' + email + ', ' + nickname + ', ' + street + ', ' + city + ', ' + state + ', ' + zip + ', ' + genres + ', ' + joined_date + ', ' + first + ', ' + last + ', ' + subscription + ');'
-	return result
-	
-
+"""
 def deleteViewerParser(uid):
 	return 'DELETE FROM Viewers V\nWHERE V.uid = ' + uid + ';'
 	
@@ -35,7 +54,7 @@ def addGenreParser(uid, genre, old_genres):
 	
 	
 def insertMovieParser(rid, website_url):
-	return 'INSERT INTO Movies\nValues (' + rid + ', ' + website_url + ');'
+	return 'INSERT INTO movies\nVALUES (' + rid + ', "' + website_url + '");'
 	
 
 def insertSessionParser(sid, uid, rid, ep_num, initiate_at, leave_at, quality, device):

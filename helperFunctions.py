@@ -3,6 +3,17 @@ import csv
 import mysql.connector
 import datetime
 
+def execute_boolean_query(db, query_string):
+	try:
+		cursor = db.cursor()
+		#print(f" DEBUG: {query_string}")
+		cursor.execute(query_string)
+		cursor.close()
+		print("Success")
+	except mysql.connector.IntegrityError as e:
+		print("Fail")
+
+
 def get_data_type(data):
 	"""
     Description:
