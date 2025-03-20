@@ -101,14 +101,10 @@ def make_db_connection():
     """
     # creating connection
     db = mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password="Gonstead4sql",
-        database="test_db"
         #host="localhost",
-        #user="test",
-        #password="password",
-        #database="cs122a"
+        user="test",
+        password="password",
+        database="cs122a"
     )
     return db
 
@@ -128,10 +124,6 @@ def close_db_connection(db):
 
 if __name__ == '__main__':
     db = make_db_connection()
-    if db.is_connected():
-        print("Success")
-    else:
-        print("Failed")
     command_parser(db)
     # commit the changes to the database
     db.commit()
