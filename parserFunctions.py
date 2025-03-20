@@ -56,5 +56,8 @@ def activeViewersParser(N, start, end):
 	'FROM Viewers V\n' + \
 	'WHERE V.uid in (SELECT V1.uid\nFROM Viewers V1\nWHERE V1.initiate_at >= ' + start + ' AND V1.leave_at <= ' + end + ');'
 
+
 def viewedVideosParser(rid):
-	return rid
+    return ('SELECT V.rid, V.ep_num, V.title, V.length, COALESCE(view_counts.view_count, 0) AS view_count\n'
+            'FROM Videos V LEFT JOIN (SELECT S.rid, COUNT(DISTINCT S.uid) AS view_count FROM Sessions S WHERE S.rid = ' 
+            + str(rid) + ' GROUP BY S.rid) view_counts ON V.rid = view_counts.rid WHERE V.rid = ' + str(rid) + ' ORDER BY V.rid DESC;')
