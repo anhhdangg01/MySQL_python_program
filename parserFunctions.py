@@ -15,9 +15,9 @@ def importParser(folderName, db):
 def insertViewerParser(db, uid, email, nickname, street, city, state, zip, genres, joined_date, first, last, subscription):
 	try:
 		cursor = db.cursor()
-		result = f'INSERT INTO viewers\nVALUES ({uid}, "{first}", "{last}", "{subscription}");'
-		cursor.execute(result)
 		result = f'INSERT INTO users\nVALUES ({uid}, "{email}", "{joined_date}", "{nickname}", "{street}", "{city}", "{state}", "{zip}", "{genres}");'
+		cursor.execute(result)
+		result = f"INSERT INTO viewers\nVALUES ({uid}, '{first}', '{last}', '{subscription}');"
 		cursor.execute(result)
 		cursor.close()
 		print("Success")
