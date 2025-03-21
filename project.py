@@ -35,6 +35,9 @@ def command_parser(db):
         #helperFunctions.execute_boolean_query(db, query)
     elif command_input[0] == "addGenre":
         old_genre = parserFunctions.selectGenresParser(command_input[1], db)
+        if command_input[2] in old_genre:
+            print("Fail")
+            return
         query = parserFunctions.addGenreParser(command_input[1], command_input[2], old_genre)
         helperFunctions.execute_insert_boolean_query(db, query)
     elif command_input[0] == "deleteViewer":
