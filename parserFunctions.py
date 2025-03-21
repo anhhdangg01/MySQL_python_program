@@ -81,6 +81,16 @@ def popularReleaseParser(N):
 			'ORDER BY reviewCount DESC\n' \
 			'LIMIT ' + N + ';'
 
+def popularReleaseParser(N):
+    return 'SELECT Rel.rid, Rel.title, COUNT(Rev.rid) AS reviewCount\n'\
+		'FROM releases Rel\n'\
+		'LEFT JOIN reviews Rev ON Rel.rid = Rev.rid\n'\
+		'GROUP BY Rel.rid, Rel.title\n'\
+		'ORDER BY reviewCount DESC, Rel.rid DESC\n'\
+		'LIMIT {N};'
+    
+	
+    
 
 def releaseTitleParser(sid):
 	return 'SELECT S.sid, R.title, R.genre, V.title, V.ep_num, V.length\n' \
