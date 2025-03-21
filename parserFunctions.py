@@ -71,7 +71,7 @@ def releasesReviewedParser(uid):
 	'WHERE Rel.rid = Rev.rid AND Rev.uid = ' + uid + "\n" + \
 	'ORDER BY Rel.title ASC;'
 	
-"""
+
 def popularReleaseParser(N):
 	return 'SELECT Rel.rid, Rel.title, COUNT(Rev.rid) as reviewCount\n' \
 	'FROM releases Rel, reviews Rev\n' \
@@ -79,14 +79,7 @@ def popularReleaseParser(N):
 	'GROUP BY Rev.rid\n' \
 	'ORDER BY reviewCount DESC\n' \
 	'LIMIT ' + N + ';'
-"""
-def popularReleaseParser(N):
-    return f'SELECT Rel.rid, Rel.title, COUNT(Rev.rid) as reviewCount\n' \
-           f'FROM releases Rel\n' \
-           f'JOIN reviews Rev ON Rel.rid = Rev.rid\n' \
-           f'GROUP BY Rel.rid\n' \
-           f'ORDER BY reviewCount DESC\n' \
-           f'LIMIT {N};'
+
 
 def releaseTitleParser(sid):
 	return 'SELECT S.sid, R.title, R.genre, V.title, V.ep_num, V.length\n' \
