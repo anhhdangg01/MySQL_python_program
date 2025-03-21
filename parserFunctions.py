@@ -90,13 +90,18 @@ def releaseTitleParser(sid):
 	
 
 def activeViewersParser(N, start, end):
-	return 'SELECT V.uid, V.first_name, V.last_name\n' + \
-	'FROM viewers V\n' + \
-	'WHERE V.uid in (SELECT V1.uid\n' + \
-					'FROM viewers V1, sessions S\n' + \
-					'WHERE V1.uid = S.uid AND COUNT(S.uid) >= ' + N + ' AND S.initiate_at >= "' + start + '" AND S.leave_at <= "' + end + '")\n' + \
-	'ORDER BY V.uid ASC;'
-
+    return f'''
+    SELECT V.uid, V.first_name, V.last_name
+    FROM viewers V
+    WHERE V.uid IN (
+        SELECT S.uid
+        FROM sessions S
+        WHERE S.initiate_at BETWEEN '{start}' AND '{end}'
+        GROUP BY S.uid
+        HAVING COUNT(S.sid) >= {N}
+    )
+    ORDER BY V.uid ASC;
+    '''
 
 def viewedVideosParser(rid):
     return ('SELECT V.rid, V.ep_num, V.title, V.length, COALESCE(view_counts.view_count, 0) AS view_count\n'
