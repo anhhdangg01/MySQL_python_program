@@ -36,20 +36,20 @@ def command_parser(db):
     elif command_input[0] == "addGenre":
         old_genre = parserFunctions.selectGenresParser(command_input[1], db)
         query = parserFunctions.addGenreParser(command_input[1], command_input[2], old_genre)
-        helperFunctions.execute_boolean_query(db, query)
+        helperFunctions.execute_insert_boolean_query(db, query)
     elif command_input[0] == "deleteViewer":
         query = parserFunctions.deleteViewerParser(command_input[1])
-        helperFunctions.execute_boolean_query(db, query)
+        helperFunctions.execute_delete_boolean_query(db, query)
     elif command_input[0] == "insertMovie":
         query = parserFunctions.insertMovieParser(command_input[1], command_input[2])
-        helperFunctions.execute_boolean_query(db, query)
+        helperFunctions.execute_insert_boolean_query(db, query)
     elif command_input[0] == "insertSession":
         query = parserFunctions.insertSessionParser(command_input[1], command_input[2], command_input[3], command_input[4],
                                             command_input[5], command_input[6], command_input[7], command_input[8])
-        helperFunctions.execute_boolean_query(db, query)
+        helperFunctions.execute_insert_boolean_query(db, query)
     elif command_input[0] == "updateRelease":
         query = parserFunctions.updateReleaseParser(command_input[1], command_input[2])
-        helperFunctions.execute_boolean_query(db, query)
+        helperFunctions.execute_insert_boolean_query(db, query)
     elif command_input[0] == "listReleases":
         query = parserFunctions.releasesReviewedParser(command_input[1])
         helperFunctions.execute_record_query(db, query)
@@ -107,9 +107,9 @@ def make_db_connection():
     # creating connection
     db = mysql.connector.connect(
         #host="localhost",
-        #user="test",
-        #password="password",
-        #database="cs122a"
+        user="test",
+        password="password",
+        database="cs122a"
     )
     return db
 
