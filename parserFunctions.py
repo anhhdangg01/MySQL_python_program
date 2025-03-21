@@ -74,11 +74,12 @@ def releasesReviewedParser(uid):
 
 def popularReleaseParser(N):
 	return 'SELECT Rel.rid, Rel.title, COUNT(Rev.rid) as reviewCount\n' \
-	'FROM releases Rel, reviews Rev\n' \
-	'WHERE Rel.rid = Rev.rid\n' \
-	'GROUP BY Rev.rid\n' \
-	'ORDER BY reviewCount DESC\n' \
-	'LIMIT ' + N + ';'
+			'FROM releases Rel\n' \
+			'JOIN reviews Rev ON Rel.rid = Rev.rid\n' \
+			'GROUP BY Rel.rid, Rel.title\n' \
+			'HAVING reviewCount > 0\n' \
+			'ORDER BY reviewCount DESC\n' \
+			'LIMIT ' + N + ';'
 
 
 def releaseTitleParser(sid):
@@ -92,8 +93,9 @@ def activeViewersParser(N, start, end):
 	return 'SELECT V.uid, V.first_name, V.last_name\n' + \
 	'FROM viewers V\n' + \
 	'WHERE V.uid in (SELECT V1.uid\n' + \
-					'FROM viewers V1\n' + \
-					'WHERE V1.initiate_at >= "' + start + '" AND V1.leave_at <= "' + end + '");'
+					'FROM viewers V1, sessions S\n' + \
+					'WHERE V1.uid = S.uid AND COUNT(S.uid) >= ' + N + ' AND S.initiate_at >= "' + start + '" AND S.leave_at <= "' + end + '")\n' + \
+	'ORDER BY V.uid ASC;'
 
 
 def viewedVideosParser(rid):
